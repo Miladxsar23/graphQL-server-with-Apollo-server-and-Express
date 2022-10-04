@@ -1,0 +1,33 @@
+{
+  "name": "graphql-server-with-apollo-server-and-express",
+  "version": "1.0.0",
+  "description": "a graphQL server that made with Apollo server and Express",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Miladxsar23/graphQL-server-with-Apollo-server-and-Express.git"
+  },
+  "keywords": [
+    "graphQL",
+    "Apollo-server",
+    "Express",
+    "Nodejs",
+    "Javascript"
+  ],
+  "author": "Milad shirian dehkordi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Miladxsar23/graphQL-server-with-Apollo-server-and-Express/issues"
+  },
+  "homepage": "https://github.com/Miladxsar23/graphQL-server-with-Apollo-server-and-Express#readme",
+  "dependencies": {
+    "apollo-server": "^3.10.2",
+    "apollo-server-express": "^3.10.2",
+    "express": "^4.18.1",
+    "graphql": "^16.6.0"
+  }
+}
