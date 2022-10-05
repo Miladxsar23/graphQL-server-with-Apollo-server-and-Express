@@ -1,17 +1,32 @@
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer, gql } from "apollo-server-express";
 import express from "express";
 
-const schema=""
-const resolver=""
+const schema = gql`
+  type Query {
+    me: User
+  }
 
-const app = express()
+  type User {
+    username: String!
+  }
+`;
+const resolvers = {
+  Query: {
+    me: () => {
+      return {
+        username: "Milad Shirian",
+      };
+    },
+  },
+};
+
+const app = express();
 const server = new ApolloServer({
-    typeDefs : schema, 
-    resolver
-})
+  typeDefs: schema,
+  resolvers,
+});
+await server.start()
+server.applyMiddleware({ app, path: "/graphql" });
 
-server.applyMiddleware({app, path:"/graphql"})
 
-app.listen(8000, () => {
-    console.log('server run http://localhost:8000/graphql')
-})
+
