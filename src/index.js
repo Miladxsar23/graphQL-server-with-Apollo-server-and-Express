@@ -14,12 +14,17 @@ const users = {
 };
 const me = users[1];
 const schema = gql`
+"The root query"
   type Query {
     me: User
     user(id: ID!): User
     users: [User!]
   }
+  "Description for the User"
   type User {
+    """
+    id is unique
+    """
     id: ID!
     username: String!
   }
