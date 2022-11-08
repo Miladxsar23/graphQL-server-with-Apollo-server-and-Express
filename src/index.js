@@ -8,11 +8,25 @@ const users = {
     id: "1",
     username: "milad shiriyan",
     date: 1666767425051,
+    messageIds: [1],
   },
   2: {
     id: "2",
     username: "a.chavoshi",
     date: 1666767425028,
+    messagesIds: [2],
+  },
+};
+let messages = {
+  1: {
+    id: "1",
+    userId: "1",
+    text: "Hello world!!",
+  },
+  2: {
+    id: "2",
+    userId: "2",
+    text: "By World",
   },
 };
 const schema = gql`
@@ -22,6 +36,8 @@ const schema = gql`
     me: User
     user(id: ID!): User
     users: [User!]
+    messages: [Message!]!
+    message(id: ID!): Message!
   }
   "Description for the User"
   type User {
@@ -31,6 +47,12 @@ const schema = gql`
     id: ID!
     username: String!
     date: Date
+    messages: [Message!]
+  }
+  type Message {
+    id: ID!
+    text: String!
+    user: User!
   }
 `;
 let resolvers = {
@@ -64,6 +86,15 @@ let resolvers = {
     date(obj, args, context, info) {
       return new Date(obj.date);
     },
+    messages(parent, args, context, info) {
+      return Object.values(messages).filter((message) => parent.id === message.userId)
+    },
+  },
+  Message: {
+    user(parent, args, context, info) {
+      const { userId:id } = parent;
+      return users[id];
+    },
   },
   Query: {
     me: (obj, args, context, info) => {
@@ -74,6 +105,12 @@ let resolvers = {
     },
     users: () => {
       return Object.values(users);
+    },
+    messages: () => {
+      return Object.values(messages);
+    },
+    message: (parent, args, context, info) => {
+      return messages[args.id];
     },
   },
 };

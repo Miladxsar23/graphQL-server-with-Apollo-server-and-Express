@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Miladxsar23/graphQL-server-with-Apollo-server-and-Express#readme",
   "dependencies": {
+    "@apollo/server": "^4.0.5",
     "apollo-server": "^3.10.2",
     "apollo-server-express": "^3.10.2",
     "cors": "^2.8.5",
