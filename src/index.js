@@ -1,5 +1,6 @@
 import { ApolloServer, gql } from "apollo-server-express";
 import { GraphQLError, GraphQLScalarType, Kind } from "graphql";
+import { v4 as uuidv4 } from "uuid";
 import cors from "cors";
 import express from "express";
 
@@ -38,6 +39,11 @@ const schema = gql`
     users: [User!]
     messages: [Message!]!
     message(id: ID!): Message!
+  }
+  type Mutation {
+    createMessage(text: String!): Message!
+    deleteMessage(id: ID!): Boolean!
+    updateMessage(id: ID!, text: String!): Message
   }
   "Description for the User"
   type User {
@@ -87,12 +93,14 @@ let resolvers = {
       return new Date(obj.date);
     },
     messages(parent, args, context, info) {
-      return Object.values(messages).filter((message) => parent.id === message.userId)
+      return Object.values(messages).filter(
+        (message) => parent.id === message.userId
+      );
     },
   },
   Message: {
     user(parent, args, context, info) {
-      const { userId:id } = parent;
+      const { userId: id } = parent;
       return users[id];
     },
   },
@@ -111,6 +119,35 @@ let resolvers = {
     },
     message: (parent, args, context, info) => {
       return messages[args.id];
+    },
+  },
+  Mutation: {
+    createMessage(parent, { text }, { me }, info) {
+      const id = uuidv4();
+      const message = {
+        id,
+        text,
+        userId: me.id,
+      };
+      messages[id] = message;
+      users[me.id].messageIds.push(id);
+      return message;
+    },
+    deleteMessage(parent, { id }, { me }, info) {
+      const { [id]: message, ...otherMessages } = messages;
+      if (!message) {
+        return false;
+      }
+      messages = otherMessages;
+      users[me.id].messageIds = users[me.id].messageIds.filter(
+        (messageId) => messageId === id
+      );
+      return true;
+    },
+    updateMessage(parent, { id, text }, { me }, info) {
+      if (!messages[id]) return null;
+      messages[id].text = text;
+      return messages[id];
     },
   },
 };
