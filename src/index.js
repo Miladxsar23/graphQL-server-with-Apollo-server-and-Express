@@ -12,9 +12,14 @@ async function startApolloServer() {
   const server = new ApolloServer({
     typeDefs: schema,
     resolvers,
-    context: {
-      models,
-      me: models.users[1],
+    context: async () => {
+      console.log(
+        "i am inside the context and i wanna show you that i'll run during every request, just look at the console :)"
+      );
+      return {
+        models,
+        me: models.users[1],
+      };
     },
   });
   await server.start();

@@ -15,4 +15,5 @@ export default gql`
     date: Date
     messages: [Message!]
   }
+  scalar Date
 `;
