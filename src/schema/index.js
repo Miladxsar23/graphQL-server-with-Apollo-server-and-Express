@@ -2,7 +2,6 @@ import { gql } from "apollo-server-express";
 import userSchema from "./users.js";
 import messageSchema from "./messages.js";
 const linkSchema = gql`
-  scalar Date
   "The root query"
   type Query {
     _: Boolean
